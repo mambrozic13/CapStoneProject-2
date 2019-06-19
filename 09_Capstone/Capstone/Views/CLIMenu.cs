@@ -1,16 +1,21 @@
-﻿using System;
+﻿using Capstone.DAL;
+using Capstone.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace Capstone.Views
 {
     public abstract class CLIMenu
     {
+        private string connectionString;
+        protected IParkSqlDAO parkDAO;
+
         /*** 
          * Model Data that this menu system needs to operate on goes here.
          ***/
-
-
+        protected Park NationalParks { get; set; }
         /// <summary>
         /// This is where every sub-menu puts its options for display to the user.
         /// </summary>
@@ -97,121 +102,167 @@ namespace Capstone.Views
             return;
         }
 
-        #region User Input Helper Methods
-        /// <summary>
-        /// This continually prompts the user until they enter a valid integer.
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        protected int GetInteger(string message)
+
+
+        public void GetAllParks()
         {
-            int resultValue = 0;
-            while (true)
+
+            //    // Create a list to hold the parks
+            //    IList<Park> parkList = new List<Park>();
+
+            //    try
+            //    {
+            //        using (SqlConnection conn = new SqlConnection(connectionString))
+            //        {
+            //            conn.Open();
+            //            SqlCommand cmd = new SqlCommand("SELECT * FROM park", conn);
+
+            //            SqlDataReader reader = cmd.ExecuteReader();
+
+            //            while (reader.Read())
+            //            {
+            //                Park park = new Park();
+            //                park.Park_ID = Convert.ToInt32(reader["park_id"]);
+            //                park.Name = Convert.ToString(reader["name"]);
+            //                park.Location = Convert.ToString(reader["location"]);
+            //                park.Establish_date = Convert.ToDateTime(reader["establish_date"]);
+            //                park.Area = Convert.ToInt32(reader["area"]);
+            //                park.Visitors = Convert.ToInt32(reader["visitors"]);
+            //                park.Description = Convert.ToString(reader["description"]);
+
+            //                parkList.Add(park);
+            //            }
+            //        }
+            //    }
+            //    catch (SqlException e)
+            //    {
+            //        Console.WriteLine($"There was an error: {e.Message}.");
+            //    }
+            //}
+
+            //// Create a new sql-based park dao.
+            //public CLIMenu(string databaseconnectionString)
+            //{
+            //    connectionString = databaseconnectionString;
+            //}
+        }
+            #region User Input Helper Methods
+            /// <summary>
+            /// This continually prompts the user until they enter a valid integer.
+            /// </summary>
+            /// <param name="message"></param>
+            /// <returns></returns>
+            protected int GetInteger(string message)
             {
-                Console.Write(message + " ");
-                string userInput = Console.ReadLine().Trim();
-                if (int.TryParse(userInput, out resultValue))
+                int resultValue = 0;
+                while (true)
                 {
-                    break;
+                    Console.Write(message + " ");
+                    string userInput = Console.ReadLine().Trim();
+                    if (int.TryParse(userInput, out resultValue))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("!!! Invalid input. Please enter a valid whole number.");
+                    }
                 }
-                else
+                return resultValue;
+            }
+
+            /// <summary>
+            /// This continually prompts the user until they enter a valid double.
+            /// </summary>
+            /// <param name="message"></param>
+            /// <returns></returns>
+            protected double GetDouble(string message)
+            {
+                double resultValue = 0;
+                while (true)
                 {
-                    Console.WriteLine("!!! Invalid input. Please enter a valid whole number.");
+                    Console.Write(message + " ");
+                    string userInput = Console.ReadLine().Trim();
+                    if (double.TryParse(userInput, out resultValue))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("!!! Invalid input. Please enter a valid decimal number.");
+                    }
+                }
+                return resultValue;
+            }
+
+            /// <summary>
+            /// This continually prompts the user until they enter a valid bool.
+            /// </summary>
+            /// <param name="message"></param>
+            /// <returns></returns>
+            protected bool GetBool(string message)
+            {
+                bool resultValue = false;
+                while (true)
+                {
+                    Console.Write(message + " ");
+                    string userInput = Console.ReadLine().Trim();
+                    if (userInput.ToUpper() == "Y")
+                    {
+                        resultValue = true;
+                        break;
+                    }
+                    else if (userInput == "N")
+                    {
+                        resultValue = false;
+                        break;
+                    }
+                    else if (bool.TryParse(userInput, out resultValue))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("!!! Invalid input. Please enter [True, False, Y or N].");
+                    }
+                }
+                return resultValue;
+            }
+
+            /// <summary>
+            /// This continually prompts the user until they enter a valid string (1 or more characters).
+            /// </summary>
+            /// <param name="message"></param>
+            /// <returns></returns>
+            protected string GetString(string message)
+            {
+                while (true)
+                {
+                    Console.Write(message + " ");
+                    string userInput = Console.ReadLine().Trim();
+                    if (!String.IsNullOrEmpty(userInput))
+                    {
+                        return userInput;
+                    }
+                    else
+                    {
+                        Console.WriteLine("!!! Invalid input. Please enter a valid decimal number.");
+                    }
                 }
             }
-            return resultValue;
-        }
 
-        /// <summary>
-        /// This continually prompts the user until they enter a valid double.
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        protected double GetDouble(string message)
-        {
-            double resultValue = 0;
-            while (true)
+            /// <summary>
+            /// Shows a message to the user and waits for the user to hit return
+            /// </summary>
+            /// <param name="message"></param>
+            protected void Pause(string message)
             {
-                Console.Write(message + " ");
-                string userInput = Console.ReadLine().Trim();
-                if (double.TryParse(userInput, out resultValue))
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("!!! Invalid input. Please enter a valid decimal number.");
-                }
+                Console.Write(message + " Press Enter to continue.");
+                Console.ReadLine();
             }
-            return resultValue;
-        }
+            #endregion
 
-        /// <summary>
-        /// This continually prompts the user until they enter a valid bool.
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        protected bool GetBool(string message)
-        {
-            bool resultValue = false;
-            while (true)
-            {
-                Console.Write(message + " ");
-                string userInput = Console.ReadLine().Trim();
-                if (userInput.ToUpper() == "Y")
-                {
-                    resultValue = true;
-                    break;
-                }
-                else if (userInput == "N")
-                {
-                    resultValue = false;
-                    break;
-                }
-                else if (bool.TryParse(userInput, out resultValue))
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("!!! Invalid input. Please enter [True, False, Y or N].");
-                }
-            }
-            return resultValue;
-        }
-
-        /// <summary>
-        /// This continually prompts the user until they enter a valid string (1 or more characters).
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        protected string GetString(string message)
-        {
-            while (true)
-            {
-                Console.Write(message + " ");
-                string userInput = Console.ReadLine().Trim();
-                if (!String.IsNullOrEmpty(userInput))
-                {
-                    return userInput;
-                }
-                else
-                {
-                    Console.WriteLine("!!! Invalid input. Please enter a valid decimal number.");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Shows a message to the user and waits for the user to hit return
-        /// </summary>
-        /// <param name="message"></param>
-        protected void Pause(string message)
-        {
-            Console.Write(message + " Press Enter to continue.");
-            Console.ReadLine();
-        }
-        #endregion
-
+        
     }
 }
+

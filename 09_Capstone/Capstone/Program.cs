@@ -1,11 +1,14 @@
-﻿using Capstone.Views;
+﻿using Capstone.DAL;
+using Capstone.Models;
+using Capstone.Views;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Capstone
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -20,8 +23,10 @@ namespace Capstone
 
 
 
+            IParkSqlDAO parkDAO = new ParkSQLDAO(connectionString);
             // Create a menu and run it
-            SampleMenu menu = new SampleMenu();
+            Park park = new Park();
+            CLIMainMenu menu = new CLIMainMenu(parkDAO);
             menu.Run();
         }
     }
