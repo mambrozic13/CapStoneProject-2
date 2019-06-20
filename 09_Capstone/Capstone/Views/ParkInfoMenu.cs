@@ -36,9 +36,9 @@ namespace Capstone.Views
                     break;
                 case "2":
                     // Call Reservation Menu
-                    ICampgroundSqlDAO campgroundDAO2 = new CampgroundSqlDAO(ConnectionString);
-                    CampgroundReservationMenu resMenu = new CampgroundReservationMenu(campgroundDAO2, campgroundList);
-                    resMenu.Run();
+                    campgroundDAO = new CampgroundSqlDAO(ConnectionString);
+                    menu = new ParkCampgroundsMenu(campgroundDAO, park);
+                    menu.Run();
                     break;
                 case "Q":
                     break;
