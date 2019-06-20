@@ -7,10 +7,10 @@ using System.Text;
 
 namespace Capstone.Views
 {
-    public class CLIMainMenu : CLIMenu
+    public class MainMenu : CLIMenu
     {
         IList<Park> parkList = new List<Park>();
-        public CLIMainMenu(IParkSqlDAO parksql)
+        public MainMenu(IParkSqlDAO parksql)
         {
             parkDAO = parksql;
             try
@@ -31,31 +31,34 @@ namespace Capstone.Views
         }
         protected override bool ExecuteSelection(string choice)
         {
+            
             switch (choice)
             {
-                case "1":
-                    // do some work
-                    // Passes info into the next section from list
-                    Park park1 = parkList.ElementAt(0);
-                    parkDAO.DisplayInfoForPark(park1);
-                    break;
-                case "2":
-                    // do some work
-                    // Passes info into the next section from list
-                    Park park2 = parkList.ElementAt(1);
-                    parkDAO.DisplayInfoForPark(park2);
-                    break;
-                case "3":
-                    // do some work
-                    // Passes info into the next section from list
-                    Park park3 = parkList.ElementAt(2);
-                    parkDAO.DisplayInfoForPark(park3);
-                    break;
                 case "Q":
                     break;
+
+                 default:
+                    int index = int.Parse(choice) - 1;
+                    Park park = parkList.ElementAt(index);
+                    DisplayInfoForPark(park);
+                  break;
             }
 
             return true;
+        }
+        public void DisplayInfoForPark(Park park)
+        {
+            Console.Clear();
+            Console.WriteLine("Park Information Screen");
+            Console.WriteLine($"{park.Name} National Park");
+            Console.WriteLine($"Location: {park.Location}");
+            Console.WriteLine($"Established: {park.Establish_date}");
+            Console.WriteLine($"Area: {park.Area}");
+            Console.WriteLine($"Annual Visitors: {park.Visitors}");
+            Console.WriteLine("");
+            Console.WriteLine($"{park.Description}");
+
+            Console.ReadKey();
         }
     }
 }

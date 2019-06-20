@@ -17,6 +17,6 @@ namespace Capstone.DAL
         /// Gets information fo a park the user selects
         /// </summary>
         /// <returns></returns>
-        void DisplayInfoForPark(Park park);
+       // void DisplayInfoForPark(Park park);
     }
 }

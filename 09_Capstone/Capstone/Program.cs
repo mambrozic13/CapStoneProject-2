@@ -26,7 +26,7 @@ namespace Capstone
             IParkSqlDAO parkDAO = new ParkSQLDAO(connectionString);
             // Create a menu and run it
             Park park = new Park();
-            CLIMainMenu menu = new CLIMainMenu(parkDAO);
+            MainMenu menu = new MainMenu(parkDAO);
             menu.Run();
         }
     }

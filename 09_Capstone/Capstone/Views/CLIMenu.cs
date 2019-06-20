@@ -11,7 +11,7 @@ namespace Capstone.Views
     {
         private string connectionString;
         protected IParkSqlDAO parkDAO;
-
+        protected ICampgroundSqlDAO campgroundDAO;
         /*** 
          * Model Data that this menu system needs to operate on goes here.
          ***/
@@ -41,7 +41,7 @@ namespace Capstone.Views
         {
             while (true)
             {
-                Console.Clear();
+                //Console.Clear();
                 DisplayBeforeMenu();
 
                 Console.WriteLine(this.Title);
@@ -89,6 +89,11 @@ namespace Capstone.Views
             return;
         }
 
+        virtual protected void DisplayBeforeMenu(Park park, MainMenu menu)
+        {
+            menu.DisplayInfoForPark(park);
+            return;
+        }
         /// <summary>
         /// DisplayAfterMenu is a virtaul mathod called after the menu options are displayed
         /// and before the user is prompted for a selection.
