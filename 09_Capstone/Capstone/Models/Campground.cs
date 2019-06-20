@@ -9,8 +9,8 @@ namespace Capstone.Models
         public int Campground_ID { get; set; }
         public int Park_ID { get; set; }
         public string Name { get; set; }
-        public DateTime Open_From_MM { get; set; }
-        public DateTime Open_To_MM { get; set; }
+        public int Open_From_MM { get; set; }
+        public int  Open_To_MM { get; set; }
         public decimal Daily_Fee { get; set; }
 
         public override string ToString()

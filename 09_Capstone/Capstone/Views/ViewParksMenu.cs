@@ -7,12 +7,12 @@ using System.Text;
 
 namespace Capstone.Views
 {
-    public class MainMenu : CLIMenu
+    public class ViewParksMenu : CLIMenu
     {
-        IList<Park> parkList = new List<Park>();
-        public MainMenu(IParkSqlDAO parksql)
+        
+        public ViewParksMenu()
         {
-            parkDAO = parksql;
+            IParkSqlDAO parkDAO = new ParkSQLDAO(ConnectionString);
             try
             { 
                 this.Title = "***Select A Park For Further Details***";
@@ -36,11 +36,12 @@ namespace Capstone.Views
             {
                 case "Q":
                     break;
-
                  default:
                     int index = int.Parse(choice) - 1;
                     Park park = parkList.ElementAt(index);
                     DisplayInfoForPark(park);
+                    ParkInfoMenu menu = new ParkInfoMenu(parkDAO, park);
+                    menu.Run();
                   break;
             }
 

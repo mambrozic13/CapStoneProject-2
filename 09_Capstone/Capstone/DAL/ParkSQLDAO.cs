@@ -20,10 +20,7 @@ namespace Capstone.DAL
 
         public IList<Park> GetAllParks()
         {
-
             // Create a list to hold the parks
-           
-
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))

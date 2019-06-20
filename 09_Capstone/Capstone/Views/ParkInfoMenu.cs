@@ -9,19 +9,17 @@ namespace Capstone.Views
 {
     public class ParkInfoMenu : CLIMenu
     {
-
-        IList<Campground> campgroundList = new List<Campground>();
-        public ParkInfoMenu(ICampgroundSqlDAO campgroundSql, IParkSqlDAO parkSql, Park park)
+        Park park = new Park();
+        public ParkInfoMenu(IParkSqlDAO parkSql, Park parkChoice)
         {
-            campgroundDAO = campgroundSql;
+            park = parkChoice;
             parkDAO = parkSql;
-
-          DisplayBeforeMenu(park, menu);
+            DisplayBeforeMenu(park);
 
                 this.Title = "***Park Infromation Screen***";
                 this.menuOptions.Add("1", "View Campgrounds");
                 this.menuOptions.Add("2", "Search For Reservation");
-                this.menuOptions.Add("3", "Return to Previous Screen");
+                this.menuOptions.Add("Q", "Return to Previous Screen");
             
 
         }
@@ -31,19 +29,18 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1":
-                    // do some work
-                    // Passes info into the next section from list
-                   // Park park1 = parkList.ElementAt(0);
-                   // parkDAO.DisplayInfoForPark(park1);
+                    // display campgrounds method
+                    ICampgroundSqlDAO campgroundDAO = new CampgroundSqlDAO(ConnectionString);
+                    ParkCampgroundsMenu menu = new ParkCampgroundsMenu(campgroundDAO, park);
+                    menu.Run();
                     break;
                 case "2":
-                    // do some work
-                    // Passes info into the next section from list
-                    // park2 = parkList.ElementAt(1);
-                   // parkDAO.DisplayInfoForPark(park2);
+                    // Call Reservation Menu
+                    ICampgroundSqlDAO campgroundDAO2 = new CampgroundSqlDAO(ConnectionString);
+                    CampgroundReservationMenu resMenu = new CampgroundReservationMenu(campgroundDAO2, campgroundList);
+                    resMenu.Run();
                     break;
-                case "3":
-
+                case "Q":
                     break;
 
             }

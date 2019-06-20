@@ -20,13 +20,13 @@ namespace Capstone
             IConfigurationRoot configuration = builder.Build();
 
             string connectionString = configuration.GetConnectionString("Project");
-
+            CLIMenu.ConnectionString = connectionString;
 
 
             IParkSqlDAO parkDAO = new ParkSQLDAO(connectionString);
             // Create a menu and run it
             Park park = new Park();
-            MainMenu menu = new MainMenu(parkDAO);
+            ViewParksMenu menu = new ViewParksMenu();
             menu.Run();
         }
     }

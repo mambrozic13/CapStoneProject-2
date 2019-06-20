@@ -1,5 +1,6 @@
 ﻿using Capstone.DAL;
 using Capstone.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,9 +10,15 @@ namespace Capstone.Views
 {
     public abstract class CLIMenu
     {
-        private string connectionString;
         protected IParkSqlDAO parkDAO;
         protected ICampgroundSqlDAO campgroundDAO;
+        public static string ConnectionString { get; set; }
+
+        public static IList<Park> parkList = new List<Park>();
+        public static IList<Campground> campgroundList = new List<Campground>();
+        public static IList<Site> siteList = new List<Site>();
+        public static IList<Reservation> reservationList = new List<Reservation>();
+
         /*** 
          * Model Data that this menu system needs to operate on goes here.
          ***/
@@ -89,11 +96,12 @@ namespace Capstone.Views
             return;
         }
 
-        virtual protected void DisplayBeforeMenu(Park park, MainMenu menu)
+        virtual protected void DisplayBeforeMenu(Park park)
         {
-            menu.DisplayInfoForPark(park);
+            //DisplayInfoForPark(park);
             return;
         }
+
         /// <summary>
         /// DisplayAfterMenu is a virtaul mathod called after the menu options are displayed
         /// and before the user is prompted for a selection.
@@ -266,6 +274,8 @@ namespace Capstone.Views
                 Console.ReadLine();
             }
             #endregion
+
+
 
         
     }

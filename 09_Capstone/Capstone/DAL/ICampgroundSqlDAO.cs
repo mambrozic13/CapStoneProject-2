@@ -9,6 +9,6 @@ namespace Capstone.DAL
     {
         IList<Campground> GetAllCampgrounds();
 
-        void DisplayCampgroundsForPark(Park park);
+        IList<Campground> GetCampgroundsForPark(Park park);
     }
 }
