@@ -10,30 +10,32 @@ namespace Capstone.Views
 
     public class CampgroundReservationMenu : CLIMenu
     {
-        string campgroundName;
-        string arrivalDate;
-        string departureDate;
+
         //DateTime arrivalDate = new DateTime();
         //DateTime departureDate = new DateTime();
         ISiteSqlDAO siteDAO = new SiteSqlDAO(ConnectionString);
         Campground campground = new Campground();
-        Park park = new Park();
-        public CampgroundReservationMenu(ICampgroundSqlDAO campgroundSql, IList<Campground> campgroundListOrig)
+        IList<Campground> campgroundList;
+        Park park;
+        
+        public CampgroundReservationMenu(ICampgroundSqlDAO campgroundSql, Park park)
         {
-
-            IList<Campground> campgroundList = campgroundListOrig;
+            this.Title = "***Search for Campground Reservation***";
+            this.park = park;
+            campgroundList = campgroundSql.GetCampgroundsForPark(park);
 
             DisplayInfoForCampground(campgroundList);
             //DisplayBeforeMenu(park);
 
-            this.Title = "***Search for Campground Reservation***";
+
+
             DisplayInformation();
         }
 
         public bool DisplayInformation()
         {
             int selectedCampground = GetInteger("Which Campground (Enter 0 To Cancel) ");
-            campground = campgroundList.ElementAt(selectedCampground - 1);
+            Campground campground = campgroundList.ElementAt(selectedCampground - 1);
                         
             if (selectedCampground < 1)
             {
@@ -47,14 +49,14 @@ namespace Capstone.Views
             }
             
 
-            arrivalDate = GetString("What is the expected arrival date? (mm/dd/yyyy)");
+            string arrivalDate = GetString("What is the expected arrival date? (mm/dd/yyyy)");
             if(!DateTime.TryParse(arrivalDate, out DateTime result))
             {
                 Console.WriteLine("That is not a valid date.");
                 Pause("");
                 return false;
             }
-            departureDate = GetString("What is the expected departure date? (mm/dd/yyyy) ");
+            string departureDate = GetString("What is the expected departure date? (mm/dd/yyyy) ");
             if(!DateTime.TryParse(departureDate, out DateTime departResult))
             {
                 Console.WriteLine("That is not a valid date.");
@@ -62,24 +64,15 @@ namespace Capstone.Views
                 return false;
             }
             DisplayAvaliableSiteHeader();
-            DisplayInfoForReservation();
+            DisplayInfoForReservation(campground, arrivalDate, departureDate);
             Console.ReadKey();
             return true;
         }
        
         protected override bool ExecuteSelection(string choice)
         {
-            switch (choice)
-            {
-                case "1":
-                    break;
-                case "2":
-                    break;
-                case "Q":
-                    break;
-
-            }
-            return true;
+           
+           return true;
         }
 
         public void DisplayAvaliableSiteHeader()
@@ -93,7 +86,7 @@ namespace Capstone.Views
             Console.Write($"\t Cost");
         }
 
-        public void DisplayInfoForReservation()
+        private void DisplayInfoForReservation(Campground campground, string arrivalDate, string departureDate)
         {
 
             IList<Site> topFiveSiteList = siteDAO.GetTop5SitesInCampground(campground, arrivalDate, departureDate);
@@ -107,7 +100,18 @@ namespace Capstone.Views
                 Console.Write($"\t {campsite.Utilities}");
                 Console.WriteLine($"\t {campground.Daily_Fee}");
             }
+            int siteNumber = GetInteger("Which site should be reserved (enter 0 to cancel)?");
+            string name = GetString("What name should the reservation be made under?");
+
+            Site site = topFiveSiteList.ElementAt(siteNumber - 1);
+
+            ReservationSqlDAO ReservationDAO = new ReservationSqlDAO(ConnectionString);
+            int reservationId = ReservationDAO.CreateNewReservation(site, name, arrivalDate, departureDate);
+            Console.WriteLine($"The reservation has been made and the confirmation id is {reservationId}");
+            Pause("");
         }
+
+
 
         public void DisplayInfoForCampground(IList<Campground> campgroundList)
         {
@@ -129,9 +133,7 @@ namespace Capstone.Views
                 Console.WriteLine();
             }
 
-
             Console.ReadKey();
-
         }            
     }
 }

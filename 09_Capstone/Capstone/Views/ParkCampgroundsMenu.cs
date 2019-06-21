@@ -9,8 +9,9 @@ namespace Capstone.Views
 {
     public class ParkCampgroundsMenu : CLIMenu
     {
-        Park park = new Park();
+        Park park;
         private ICampgroundSqlDAO campgroundDAO;
+        IList<Campground> campgroundList;
 
         public ParkCampgroundsMenu(ICampgroundSqlDAO campgroundSql, Park parkChoice)
         {
@@ -26,10 +27,6 @@ namespace Capstone.Views
 
             this.menuOptions.Add("1", "Search For Available Reservation");
             this.menuOptions.Add("Q", "Return to Previous Screen");
-
-
-
-
         }
 
         protected override bool ExecuteSelection(string choice)
@@ -38,7 +35,7 @@ namespace Capstone.Views
             {
                 case "1":
                     // Call and execute reservation menu
-                    CampgroundReservationMenu resMenu = new CampgroundReservationMenu(campgroundDAO, campgroundList);
+                    CampgroundReservationMenu resMenu = new CampgroundReservationMenu(campgroundDAO, park);
                     resMenu.Run();
                     break;
 
@@ -69,8 +66,6 @@ namespace Capstone.Views
                 Console.Write($"\t {campground.Daily_Fee}");
                 Console.WriteLine();
             }
-
-
             Console.ReadKey();
         }
 

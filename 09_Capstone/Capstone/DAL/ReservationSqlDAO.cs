@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Capstone.DAL
 {
-    public class ReservationSqlDAO : IReservationSqlDAO
+    public class ReservationSqlDAO //: IReservationSqlDAO
     {
         private string connectionString;
         int reservationID;
@@ -89,7 +89,7 @@ namespace Capstone.DAL
         }
 
 
-        public int CreateNewReservation(Site site, string name, DateTime arrivalDate, DateTime departureDate)
+        public int CreateNewReservation(Site site, string name, string arrivalDate, string departureDate)
         {
             try
             {

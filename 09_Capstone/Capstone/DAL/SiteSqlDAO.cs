@@ -70,7 +70,7 @@ namespace Capstone.DAL
                 {
                     conn.Open();
 
-                    string sql = "SELECT TOP 5 * FROM site WHERE site.site_id NOT IN (SELECT reservation.site_id FROM reservation WHERE @from_date BETWEEN reservation.from_date AND reservation.to_date OR @to_date BETWEEN reservation.from_date AND reservation.to_date) AND @campgroundID = site.campground_id;";
+                    string sql = "SELECT TOP 5 * FROM site WHERE site.campground_id = @campgroundID AND site.site_id NOT IN (SELECT reservation.site_id FROM reservation WHERE from_date BETWEEN @from_date AND @to_date OR to_date BETWEEN @from_date AND @to_date);";
                     SqlCommand cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@campgroundID", campground.Campground_ID);
                     cmd.Parameters.AddWithValue("@from_date", fromDate);

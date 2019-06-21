@@ -10,6 +10,8 @@ namespace Capstone.Views
     public class ParkInfoMenu : CLIMenu
     {
         Park park = new Park();
+        private ICampgroundSqlDAO campgroundDAO;
+
         public ParkInfoMenu(IParkSqlDAO parkSql, Park parkChoice)
         {
             park = parkChoice;
@@ -24,6 +26,7 @@ namespace Capstone.Views
 
         }
 
+
         protected override bool ExecuteSelection(string choice)
         {
             switch (choice)
@@ -37,8 +40,8 @@ namespace Capstone.Views
                 case "2":
                     // Call Reservation Menu
                     campgroundDAO = new CampgroundSqlDAO(ConnectionString);
-                    menu = new ParkCampgroundsMenu(campgroundDAO, park);
-                    menu.Run();
+                    CampgroundReservationMenu menu2 = new CampgroundReservationMenu(campgroundDAO, park);
+                    menu2.Run();
                     break;
                 case "Q":
                     break;

@@ -14,10 +14,9 @@ namespace Capstone.Views
         protected ICampgroundSqlDAO campgroundDAO;
         public static string ConnectionString { get; set; }
 
-        public static IList<Park> parkList = new List<Park>();
-        public static IList<Campground> campgroundList = new List<Campground>();
-        public static IList<Site> siteList = new List<Site>();
-        public static IList<Reservation> reservationList = new List<Reservation>();
+        //public static IList<Park> parkList = new List<Park>();
+        //public static IList<Site> siteList = new List<Site>();
+        //public static IList<Reservation> reservationList = new List<Reservation>();
 
         /*** 
          * Model Data that this menu system needs to operate on goes here.

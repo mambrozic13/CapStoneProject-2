@@ -9,7 +9,8 @@ namespace Capstone.Views
 {
     public class ViewParksMenu : CLIMenu
     {
-        
+        IList<Park> parkList;
+
         public ViewParksMenu()
         {
             IParkSqlDAO parkDAO = new ParkSqlDAO(ConnectionString);
