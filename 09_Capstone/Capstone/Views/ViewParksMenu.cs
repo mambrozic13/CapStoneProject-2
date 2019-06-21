@@ -12,7 +12,7 @@ namespace Capstone.Views
         
         public ViewParksMenu()
         {
-            IParkSqlDAO parkDAO = new ParkSQLDAO(ConnectionString);
+            IParkSqlDAO parkDAO = new ParkSqlDAO(ConnectionString);
             try
             { 
                 this.Title = "***Select A Park For Further Details***";

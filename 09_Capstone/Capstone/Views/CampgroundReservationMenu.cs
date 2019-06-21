@@ -11,10 +11,12 @@ namespace Capstone.Views
     public class CampgroundReservationMenu : CLIMenu
     {
         string campgroundName;
-        DateTime arrivalDate = new DateTime();
-        DateTime departureDate = new DateTime();
-
-
+        string arrivalDate;
+        string departureDate;
+        //DateTime arrivalDate = new DateTime();
+        //DateTime departureDate = new DateTime();
+        ISiteSqlDAO siteDAO = new SiteSqlDAO(ConnectionString);
+        Campground campground = new Campground();
         Park park = new Park();
         public CampgroundReservationMenu(ICampgroundSqlDAO campgroundSql, IList<Campground> campgroundListOrig)
         {
@@ -28,26 +30,43 @@ namespace Capstone.Views
             DisplayInformation();
         }
 
-        public void DisplayInformation()
+        public bool DisplayInformation()
         {
-            Console.WriteLine("Which Campground (Enter Q To Cancel): ");            
-            campgroundName = Console.ReadLine();
-            try
+            int selectedCampground = GetInteger("Which Campground (Enter 0 To Cancel) ");
+            campground = campgroundList.ElementAt(selectedCampground - 1);
+                        
+            if (selectedCampground < 1)
             {
-                Console.WriteLine("What is the arrival date?: ");
-                arrivalDate = Convert.ToDateTime(Console.ReadLine());
-                Console.WriteLine("What is the departure date?: ");
-                departureDate = Convert.ToDateTime(Console.ReadLine());
-                Console.ReadKey();
+                return false;
             }
-            catch (Exception ex)
+            if (selectedCampground > campgroundList.Count)
             {
-                Console.WriteLine($"There was an error: {ex.Message}.");
-                Console.ReadKey();
+                Console.WriteLine("That is not a valid park.");
+                Pause("");
+                return false;
             }
+            
 
+            arrivalDate = GetString("What is the expected arrival date? (mm/dd/yyyy)");
+            if(!DateTime.TryParse(arrivalDate, out DateTime result))
+            {
+                Console.WriteLine("That is not a valid date.");
+                Pause("");
+                return false;
+            }
+            departureDate = GetString("What is the expected departure date? (mm/dd/yyyy) ");
+            if(!DateTime.TryParse(departureDate, out DateTime departResult))
+            {
+                Console.WriteLine("That is not a valid date.");
+                Pause("");
+                return false;
+            }
+            DisplayAvaliableSiteHeader();
+            DisplayInfoForReservation();
+            Console.ReadKey();
+            return true;
         }
-
+       
         protected override bool ExecuteSelection(string choice)
         {
             switch (choice)
@@ -55,20 +74,44 @@ namespace Capstone.Views
                 case "1":
                     break;
                 case "2":
-                    // Call Reservation Menu
                     break;
                 case "Q":
                     break;
 
             }
-
             return true;
         }
 
+        public void DisplayAvaliableSiteHeader()
+        {
+            Console.WriteLine("Results Matching Your Search Criteria.");
+            Console.WriteLine($"Site No");
+            Console.Write($"\t Max Occup.");
+            Console.Write($"\t Accessible?");
+            Console.Write($"\t Max RV Length");
+            Console.Write($"\t Utility?");
+            Console.Write($"\t Cost");
+        }
+
+        public void DisplayInfoForReservation()
+        {
+
+            IList<Site> topFiveSiteList = siteDAO.GetTop5SitesInCampground(campground, arrivalDate, departureDate);
+            foreach(Site campsite in topFiveSiteList)
+            {
+                Console.WriteLine("");
+                Console.Write($"\t {campsite.Site_Number}");
+                Console.Write($"\t {campsite.Max_Occupancy}");
+                Console.Write($"\t {campsite.Accessible}");
+                Console.Write($"\t {campsite.Max_RV_Length}");
+                Console.Write($"\t {campsite.Utilities}");
+                Console.WriteLine($"\t {campground.Daily_Fee}");
+            }
+        }
 
         public void DisplayInfoForCampground(IList<Campground> campgroundList)
         {
-            Console.Clear();
+
             Console.WriteLine($"{park.Name} Park Campgrounds");
             Console.WriteLine($"");
             Console.Write($"\t Name");
@@ -89,6 +132,6 @@ namespace Capstone.Views
 
             Console.ReadKey();
 
-        }
+        }            
     }
 }
