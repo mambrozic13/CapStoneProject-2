@@ -35,12 +35,12 @@ namespace Capstone.DAL
                     while (reader.Read())
                     {
                         Reservation reservation = new Reservation();
-                        reservation.Reservation_ID = Convert.ToInt32(reader["park_id"]);
+                        reservation.Reservation_ID = Convert.ToInt32(reader["reservation_id"]);
                         reservation.Site_ID = Convert.ToInt32(reader["site_id"]);
                         reservation.Name = Convert.ToString(reader["name"]);
-                        reservation.From_Date = Convert.ToInt32(reader["from_date"]);
-                        reservation.To_Date = Convert.ToInt32(reader["area"]);
-                        reservation.Create_Date = Convert.ToInt32(reader["create_date"]);
+                        reservation.From_Date = Convert.ToDateTime(reader["from_date"]);
+                        reservation.To_Date = Convert.ToDateTime(reader["to_date"]);
+                        reservation.Create_Date = Convert.ToDateTime(reader["create_date"]);
                         reservationList.Add(reservation);
                     }
                 }
@@ -52,41 +52,41 @@ namespace Capstone.DAL
             return reservationList;
         }
 
-        public IList<Reservation> GetReservationsForCampground(Campground campground)
-        {
-            // Create a list to hold our campgrounds
-            IList<Reservation> reservationList = new List<Reservation>();
+        //public IList<Reservation> GetReservationsForCampground(Campground campground)
+        //{
+        //    // Create a list to hold our campgrounds
+        //    IList<Reservation> reservationList = new List<Reservation>();
 
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
 
-                    string sql = "SELECT * FROM reservation AS r INNER JOIN site AS s ON r.site_id = s.id INNER JOIN campground AS c ON s.campground_id = c.campground_id WHERE c.name = @name";
-                    SqlCommand cmd = new SqlCommand(sql, conn);
+        //            string sql = "SELECT * FROM reservation AS r INNER JOIN site AS s ON r.site_id = s.id INNER JOIN campground AS c ON s.campground_id = c.campground_id WHERE c.name = @name";
+        //            SqlCommand cmd = new SqlCommand(sql, conn);
 
-                    SqlDataReader reader = cmd.ExecuteReader();
+        //            SqlDataReader reader = cmd.ExecuteReader();
 
-                    while (reader.Read())
-                    {
-                        Reservation reservation = new Reservation();
-                        reservation.Reservation_ID = Convert.ToInt32(reader["park_id"]);
-                        reservation.Site_ID = Convert.ToInt32(reader["site_id"]);
-                        reservation.Name = Convert.ToString(reader["name"]);
-                        reservation.From_Date = Convert.ToInt32(reader["from_date"]);
-                        reservation.To_Date = Convert.ToInt32(reader["area"]);
-                        reservation.Create_Date = Convert.ToInt32(reader["create_date"]);
-                        reservationList.Add(reservation);
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine($"There was an error: {ex.Message}.");
-            }
-            return reservationList;
-        }
+        //            while (reader.Read())
+        //            {
+        //                Reservation reservation = new Reservation();
+        //                reservation.Reservation_ID = Convert.ToInt32(reader["park_id"]);
+        //                reservation.Site_ID = Convert.ToInt32(reader["site_id"]);
+        //                reservation.Name = Convert.ToString(reader["name"]);
+        //                reservation.From_Date = Convert.ToDateTime(reader["from_date"]);
+        //                reservation.To_Date = Convert.ToDateTime(reader["to_date"]);
+        //                reservation.Create_Date = Convert.ToDateTime(reader["create_date"]);
+        //                reservationList.Add(reservation);
+        //            }
+        //        }
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        Console.WriteLine($"There was an error: {ex.Message}.");
+        //    }
+        //    return reservationList;
+        //}
 
 
         public int CreateNewReservation(Site site, string name, string arrivalDate, string departureDate)
