@@ -15,7 +15,7 @@ namespace Capstone.Views
         {
             IParkSqlDAO parkDAO = new ParkSqlDAO(ConnectionString);
             try
-            { 
+            {
                 this.Title = "***Select A Park For Further Details***";
                 parkList = parkDAO.GetAllParks();
                 foreach(Park park in parkList)
@@ -27,7 +27,6 @@ namespace Capstone.Views
             catch(Exception e)
             {
                 Console.WriteLine($"There was an error: {e.Message}.");
-                Console.ReadKey();
             }
         }
         protected override bool ExecuteSelection(string choice)
@@ -55,7 +54,7 @@ namespace Capstone.Views
             Console.WriteLine($"{park.Name} National Park");
             Console.WriteLine($"Location: {park.Location}");
             Console.WriteLine($"Established: {park.Establish_date}");
-            Console.WriteLine($"Area: {park.Area}");
+            Console.WriteLine($"Area: {park.Area} sq km");
             Console.WriteLine($"Annual Visitors: {park.Visitors}");
             Console.WriteLine("");
             Console.WriteLine($"{park.Description}");

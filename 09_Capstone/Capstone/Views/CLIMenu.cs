@@ -114,57 +114,73 @@ namespace Capstone.Views
             return;
         }
 
-
-
-        public void GetAllParks()
+        public string ReturnMonthForInt(int monthNumber)
         {
-
-            //    // Create a list to hold the parks
-            //    IList<Park> parkList = new List<Park>();
-
-            //    try
-            //    {
-            //        using (SqlConnection conn = new SqlConnection(connectionString))
-            //        {
-            //            conn.Open();
-            //            SqlCommand cmd = new SqlCommand("SELECT * FROM park", conn);
-
-            //            SqlDataReader reader = cmd.ExecuteReader();
-
-            //            while (reader.Read())
-            //            {
-            //                Park park = new Park();
-            //                park.Park_ID = Convert.ToInt32(reader["park_id"]);
-            //                park.Name = Convert.ToString(reader["name"]);
-            //                park.Location = Convert.ToString(reader["location"]);
-            //                park.Establish_date = Convert.ToDateTime(reader["establish_date"]);
-            //                park.Area = Convert.ToInt32(reader["area"]);
-            //                park.Visitors = Convert.ToInt32(reader["visitors"]);
-            //                park.Description = Convert.ToString(reader["description"]);
-
-            //                parkList.Add(park);
-            //            }
-            //        }
-            //    }
-            //    catch (SqlException e)
-            //    {
-            //        Console.WriteLine($"There was an error: {e.Message}.");
-            //    }
-            //}
-
-            //// Create a new sql-based park dao.
-            //public CLIMenu(string databaseconnectionString)
-            //{
-            //    connectionString = databaseconnectionString;
-            //}
+            string month = "";
+            switch (monthNumber)
+            {
+                case 1:
+                    month = "January";
+                    return month;
+                case 2:
+                    month = "February";
+                    return month;
+                case 3:
+                    month = "March";
+                    return month;
+                case 4:
+                    month = "April";
+                    return month;
+                case 5:
+                    month = "May";
+                    return month;
+                case 6:
+                    month = "June";
+                    return month;
+                case 7:
+                    month = "July";
+                    return month;
+                case 8:
+                    month = "August";
+                    return month;
+                case 9:
+                    month = "September";
+                    return month;
+                case 10:
+                    month = "October";
+                    return month;
+                case 11:
+                    month = "November";
+                    return month;
+                case 12:
+                    month = "December";
+                    return month;
+            }
+            return "";
         }
-            #region User Input Helper Methods
-            /// <summary>
-            /// This continually prompts the user until they enter a valid integer.
-            /// </summary>
-            /// <param name="message"></param>
-            /// <returns></returns>
-            protected int GetInteger(string message)
+
+        public string ReturnYesORNoForBool(bool boolValue)
+        {
+            string YesNo = "";
+            switch (boolValue)
+            {
+                case true:
+                    YesNo = "Yes";
+                    return YesNo;
+                case false:
+                    YesNo = "N/A";
+                    return YesNo;
+            }
+            return YesNo;
+        }
+
+        #region User Input Helper Methods
+        /// <summary>
+        /// This continually prompts the user until they enter a valid integer.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        protected int GetInteger(string message)
             {
                 int resultValue = 0;
                 while (true)

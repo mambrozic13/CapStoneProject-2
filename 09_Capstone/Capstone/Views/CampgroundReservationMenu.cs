@@ -25,22 +25,19 @@ namespace Capstone.Views
             campgroundList = campgroundSql.GetCampgroundsForPark(park);
 
             DisplayInfoForCampground(campgroundList);
-            //DisplayBeforeMenu(park);
-
-
-
             DisplayInformation();
         }
 
         public bool DisplayInformation()
         {
             int selectedCampground = GetInteger("Which Campground (Enter 0 To Cancel) ");
-            Campground campground = campgroundList.ElementAt(selectedCampground - 1);
-                        
             if (selectedCampground < 1)
             {
                 return false;
             }
+            Campground campground = campgroundList.ElementAt(selectedCampground - 1);
+                        
+
             if (selectedCampground > campgroundList.Count)
             {
                 Console.WriteLine("That is not a valid park.");
@@ -88,17 +85,20 @@ namespace Capstone.Views
 
         private void DisplayInfoForReservation(Campground campground, string arrivalDate, string departureDate)
         {
-
+            int count = 1;
             IList<Site> topFiveSiteList = siteDAO.GetTop5SitesInCampground(campground, arrivalDate, departureDate);
             foreach(Site campsite in topFiveSiteList)
             {
-                Console.WriteLine("");
-                Console.Write($"\t {campsite.Site_Number}");
-                Console.Write($"\t {campsite.Max_Occupancy}");
-                Console.Write($"\t {campsite.Accessible}");
-                Console.Write($"\t {campsite.Max_RV_Length}");
-                Console.Write($"\t {campsite.Utilities}");
-                Console.WriteLine($"\t {campground.Daily_Fee}");
+                    string Accessible = ReturnYesORNoForBool(campsite.Accessible);
+                    string Utilities = ReturnYesORNoForBool(campsite.Utilities);
+                    Console.WriteLine("");
+                    Console.Write($"{count}){campsite.Site_Number}");
+                    Console.Write($"\t {campsite.Max_Occupancy}");
+                    Console.Write($"\t {Accessible}");
+                    Console.Write($"\t {campsite.Max_RV_Length}");
+                    Console.Write($"\t {Utilities}");
+                    Console.WriteLine($"\t {campground.Daily_Fee:C}");
+                count++;
             }
             int siteNumber = GetInteger("Which site should be reserved (enter 0 to cancel)?");
             string name = GetString("What name should the reservation be made under?");
@@ -109,31 +109,40 @@ namespace Capstone.Views
             int reservationId = ReservationDAO.CreateNewReservation(site, name, arrivalDate, departureDate);
             Console.WriteLine($"The reservation has been made and the confirmation id is {reservationId}");
             Pause("");
+            ViewParksMenu menu = new ViewParksMenu();
+            menu.Run();
         }
 
 
 
         public void DisplayInfoForCampground(IList<Campground> campgroundList)
         {
-
+            string campgroundOpenMonth;
+            string campgroundCloseMonth;
+            Console.Clear();
             Console.WriteLine($"{park.Name} Park Campgrounds");
             Console.WriteLine($"");
-            Console.Write($"\t Name");
-            Console.Write($"\t Open");
-            Console.Write($"\t Close");
-            Console.Write($"\t Daily Fee");
+            Console.Write(" ".PadRight(6) + "Name".PadRight(35));
+            Console.Write("Open".PadRight(20));
+            Console.Write($"Close".PadRight(20));
+            Console.Write($"Daily Fee".PadRight(10));
             Console.WriteLine("");
-
+            int count = 1;
             foreach (Campground campground in campgroundList)
             {
-                Console.Write($"\t {campground.Name}");
-                Console.Write($"\t {campground.Open_From_MM}");
-                Console.Write($"\t {campground.Open_To_MM}");
-                Console.Write($"\t {campground.Daily_Fee}");
-                Console.WriteLine();
-            }
 
+                campgroundOpenMonth = ReturnMonthForInt(campground.Open_From_MM);
+                campgroundCloseMonth = ReturnMonthForInt(campground.Open_To_MM);
+
+                Console.Write("".PadRight(4) + $"{count}){ campground.Name}".PadRight(35));
+
+                Console.Write($"{campgroundOpenMonth}".PadRight(20));
+                Console.Write($"{campgroundCloseMonth}".PadRight(21));
+                Console.Write("".PadRight(3) + $"{campground.Daily_Fee:C}".PadRight(3));
+                Console.WriteLine();
+                count++;
+            }
             Console.ReadKey();
-        }            
+        }
     }
 }

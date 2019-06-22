@@ -49,25 +49,32 @@ namespace Capstone.Views
 
         public void DisplayInfoForCampground(IList<Campground> campgroundList)
         {
+            string campgroundOpenMonth;
+            string campgroundCloseMonth;
             Console.Clear();
             Console.WriteLine($"{park.Name} Park Campgrounds");
             Console.WriteLine($"");
-            Console.Write($"\t Name");
-            Console.Write($"\t Open");
-            Console.Write($"\t Close");
-            Console.Write($"\t Daily Fee");
+            Console.Write(" " .PadRight(6) +  "Name".PadRight(35));
+            Console.Write("Open".PadRight(20));
+            Console.Write($"Close".PadRight(20));
+            Console.Write($"Daily Fee".PadRight(10));
             Console.WriteLine("");
+            int count = 1;
+                foreach (Campground campground in campgroundList)
+                {
 
-            foreach (Campground campground in campgroundList)
-            {
-                Console.Write($"\t {campground.Name}");
-                Console.Write($"\t {campground.Open_From_MM}");
-                Console.Write($"\t {campground.Open_To_MM}");
-                Console.Write($"\t {campground.Daily_Fee}");
-                Console.WriteLine();
-            }
+                    campgroundOpenMonth = ReturnMonthForInt(campground.Open_From_MM);
+                    campgroundCloseMonth = ReturnMonthForInt(campground.Open_To_MM);
+
+                    Console.Write("".PadRight(4) + $"{count}){ campground.Name}".PadRight(35));
+
+                    Console.Write($"{campgroundOpenMonth}".PadRight(20));
+                    Console.Write($"{campgroundCloseMonth}".PadRight(21));
+                    Console.Write("".PadRight(3) + $"{campground.Daily_Fee:C}".PadRight(3));
+                    Console.WriteLine();
+                    count++;
+                }
             Console.ReadKey();
         }
-
     }
 }

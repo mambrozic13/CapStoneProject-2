@@ -16,7 +16,7 @@ namespace Capstone.Views
         {
             park = parkChoice;
             parkDAO = parkSql;
-            DisplayBeforeMenu(park);
+          //  DisplayBeforeMenu(park);
 
                 this.Title = "***Park Infromation Screen***";
                 this.menuOptions.Add("1", "View Campgrounds");
