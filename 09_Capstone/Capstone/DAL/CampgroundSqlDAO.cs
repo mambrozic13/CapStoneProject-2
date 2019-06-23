@@ -18,41 +18,6 @@ namespace Capstone.DAL
 
 
 
-        //public IList<Campground> GetAllCampgrounds()
-        //{
-        //    // Create a list to hold the parks
-        //    IList<Campground> campgroundList = new List<Campground>();
-
-        //    try
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-        //            SqlCommand cmd = new SqlCommand("SELECT * FROM campground", conn);
-
-        //            SqlDataReader reader = cmd.ExecuteReader();
-
-        //            while (reader.Read())
-        //            {
-        //                Campground campground = new Campground();
-        //                campground.Name = Convert.ToString(reader["name"]);
-        //                campground.Park_ID = Convert.ToInt32(reader["park_id"]);
-        //                campground.Open_From_MM = Convert.ToInt32(reader["open_from_mm"]);
-        //                campground.Open_To_MM = Convert.ToInt32(reader["open_to_mm"]);
-        //                campground.Daily_Fee = Convert.ToDecimal(reader["daily_fee"]);
-
-        //                campgroundList.Add(campground);
-        //            }
-        //        }
-        //    }
-        //    catch (SqlException e)
-        //    {
-        //        Console.WriteLine($"There was an error: {e.Message}.");
-        //    }
-        //    return campgroundList;
-        //}
-
-
         public IList<Campground> GetCampgroundsForPark(Park park)
         {
             // Create a list to hold campgrounds

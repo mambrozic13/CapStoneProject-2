@@ -51,21 +51,6 @@ namespace Capstone.DAL
             }
             return parkList;
         }
-
-        //public void DisplayInfoForPark(Park park)
-        //{
-        //    Console.Clear();
-        //    Console.WriteLine("Park Information Screen");
-        //    Console.WriteLine($"{park.Name} National Park");
-        //    Console.WriteLine($"Location: {park.Location}");
-        //    Console.WriteLine($"Established: {park.Establish_date}");
-        //    Console.WriteLine($"Area: {park.Area}");
-        //    Console.WriteLine($"Annual Visitors: {park.Visitors}");
-        //    Console.WriteLine("");
-        //    Console.WriteLine($"{park.Description}");
-
-        //    Console.ReadKey();
-        //}
     }
     
 }

@@ -33,6 +33,8 @@ namespace Capstone.Views
             int selectedCampground = GetInteger("Which Campground (Enter 0 To Cancel) ");
             if (selectedCampground < 1)
             {
+                Console.WriteLine("That is not a valid park.");
+                Pause("");
                 return false;
             }
             Campground campground = campgroundList.ElementAt(selectedCampground - 1);
@@ -62,25 +64,21 @@ namespace Capstone.Views
             }
             DisplayAvaliableSiteHeader();
             DisplayInfoForReservation(campground, arrivalDate, departureDate);
-            Console.ReadKey();
             return true;
         }
        
-        protected override bool ExecuteSelection(string choice)
-        {
-           
-           return true;
-        }
+
 
         public void DisplayAvaliableSiteHeader()
         {
             Console.WriteLine("Results Matching Your Search Criteria.");
-            Console.WriteLine($"Site No");
-            Console.Write($"\t Max Occup.");
-            Console.Write($"\t Accessible?");
-            Console.Write($"\t Max RV Length");
-            Console.Write($"\t Utility?");
-            Console.Write($"\t Cost");
+            Console.WriteLine("");
+            Console.Write($"Site No".PadRight(10));
+            Console.Write($"\t Max Occup.".PadRight(10));
+            Console.Write($"\t Accessible?".PadRight(10));
+            Console.Write($"\t Max RV Length".PadRight(10));
+            Console.Write($"\t Utility?".PadRight(10));
+            Console.Write($"\t Cost".PadRight(10));
         }
 
         private void DisplayInfoForReservation(Campground campground, string arrivalDate, string departureDate)
@@ -92,12 +90,13 @@ namespace Capstone.Views
                     string Accessible = ReturnYesORNoForBool(campsite.Accessible);
                     string Utilities = ReturnYesORNoForBool(campsite.Utilities);
                     Console.WriteLine("");
-                    Console.Write($"{count}){campsite.Site_Number}");
-                    Console.Write($"\t {campsite.Max_Occupancy}");
-                    Console.Write($"\t {Accessible}");
-                    Console.Write($"\t {campsite.Max_RV_Length}");
-                    Console.Write($"\t {Utilities}");
-                    Console.WriteLine($"\t {campground.Daily_Fee:C}");
+                    Console.Write($"{count}){campsite.Site_Number}".PadRight(10));
+                    Console.Write($"\t {campsite.Max_Occupancy}".PadRight(10));
+                    Console.Write($"\t {Accessible}".PadRight(10));
+                    Console.Write($"\t {campsite.Max_RV_Length}".PadRight(10));
+                    Console.Write($"\t {Utilities}".PadRight(10));
+                    Console.Write($"\t {campground.Daily_Fee:C}".PadRight(10));
+                    Console.WriteLine("");
                 count++;
             }
             int siteNumber = GetInteger("Which site should be reserved (enter 0 to cancel)?");
@@ -117,6 +116,7 @@ namespace Capstone.Views
 
         public void DisplayInfoForCampground(IList<Campground> campgroundList)
         {
+            
             string campgroundOpenMonth;
             string campgroundCloseMonth;
             Console.Clear();
@@ -143,6 +143,11 @@ namespace Capstone.Views
                 count++;
             }
             Console.ReadKey();
+        }
+
+        protected override bool ExecuteSelection(string choice)
+        {
+           return true;
         }
     }
 }

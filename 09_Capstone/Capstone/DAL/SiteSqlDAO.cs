@@ -141,6 +141,6 @@ namespace Capstone.DAL
             return siteListReserved;
         }
 
-    
+
     }
 }
